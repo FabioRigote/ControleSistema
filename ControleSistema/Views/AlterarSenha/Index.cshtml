@@ -1,50 +1,140 @@
-﻿
-@model AlterarSenhaModel
+﻿@model AlterarSenhaModel
 @{
     ViewData["Title"] = "Alterar senha do usuário";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Alterar senha do usuário</h1>
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        line-height: 1.6;
+        color: #ddd;
+        margin: 0;
+        padding: 0;
+        background-color: #121212;
+    }
+
+    .container {
+        margin-top: 50px;
+    }
+
+    h1 {
+        color: #e0e0e0;
+        margin-bottom: 20px;
+    }
+
+    .form-label {
+        color: #e0e0e0;
+        text-align: left; /* Alinhamento à esquerda */
+    }
+
+    .form-control {
+        background-color: #1e1e1e;
+        color: #ddd;
+        border: 1px solid #333;
+        transition: all 0.3s ease-in-out;
+    }
+
+        .form-control:focus {
+            background-color: #343a40;
+            border-color: #28a745;
+            box-shadow: 0 0 10px rgba(40, 167, 69, 0.3);
+        }
+
+        .form-control::placeholder {
+            color: #888;
+        }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .btn {
+        padding: 12px;
+        border-radius: 5px;
+        transition: all 0.3s ease-in-out;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        color: #fff;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+        color: #fff;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .alert-success, .alert-danger {
+        background-color: #1e1e1e;
+        color: #ddd;
+        border: 1px solid #333;
+    }
+
+        .alert-success .btn-close, .alert-danger .btn-close {
+            background-color: transparent;
+            color: #ddd;
+        }
+
+    .form-container {
+        text-align: left; /* Alinhar todo o formulário à esquerda */
+    }
+</style>
+
+<div class="container">
+    <div class="text-center">
+        <h1 class="display-4">Alterar senha do usuário</h1>
+    </div>
+
+    @if (TempData["MensagemSucesso"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle"></i> @TempData["MensagemSucesso"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["MensagemErro"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-circle"></i> @TempData["MensagemErro"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="form-container">
+        <form asp-controller="AlterarSenha" asp-action="Alterar" method="post">
+            <div class="form-group mb-3">
+                <label for="senhaAtual" class="form-label">Senha Atual</label>
+                <input type="password" asp-for="SenhaAtual" class="form-control" placeholder="Digite a senha atual do usuário">
+                @Html.ValidationMessageFor(x => x.SenhaAtual, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="novaSenha" class="form-label">Nova Senha</label>
+                <input type="password" asp-for="NovaSenha" class="form-control" placeholder="Digite a nova senha do usuário">
+                @Html.ValidationMessageFor(x => x.NovaSenha, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="confirmarSenha" class="form-label">Confirmar Nova Senha</label>
+                <input type="password" asp-for="ConfirmarNovaSenha" class="form-control" placeholder="Confirme a nova senha do usuário">
+                @Html.ValidationMessageFor(x => x.ConfirmarNovaSenha, "", new { @class = "text-danger" })
+            </div>
+
+            <button type="submit" class="btn btn-primary">Alterar</button>
+            <a class="btn btn-secondary" asp-action="Index" asp-controller="Home" role="button">Voltar</a>
+        </form>
+    </div>
 </div>
-
-@if (TempData["MensagemSucesso"] != null)
-{
-    <div class="alert alert-success" role="alert">
-        <button type="button" class="btn btn-danger btn-sm close-alert" data-bs-dismiss="alert" aria-label="Close">X</button>
-        @TempData["MensagemSucesso"]
-    </div>
-}
-
-@if (TempData["MensagemErro"] != null)
-{
-    <div class="alert alert-danger" role="alert">
-        <button type="button" class="btn btn-danger btn-sm close-alert" data-bs-dismiss="alert" aria-label="Close">X</button>
-        @TempData["MensagemErro"]
-    </div>
-}
-
-<form asp-controller="AlterarSenha" asp-action="Alterar" method="post">
-
-    <div class="form-group">
-        <label for="senhaAtual" class="form-label">Senha Atual</label>
-        <input type="password" asp-for="SenhaAtual" class="form-control" placeholder="Digite a senha atual do usuário">
-        @Html.ValidationMessageFor(x => x.SenhaAtual)
-    </div>
-
-    <div class="form-group">
-        <label for="novaSenha" class="form-label">Nova Senha</label>
-        <input type="password" asp-for="NovaSenha" class="form-control" placeholder="Digite a nova senha do usuário">
-        @Html.ValidationMessageFor(x => x.NovaSenha)
-    </div>
-
-    <div class="form-group">
-        <label for="confirmarSenha" class="form-label">Confirmar Nova Senha</label>
-        <input type="password" asp-for="ConfirmarNovaSenha" class="form-control" placeholder="Digite a confirmação da nova senha do usuário">
-        @Html.ValidationMessageFor(x => x.ConfirmarNovaSenha)
-    </div>
-
-    <button type="submit" class="btn btn-primary btn-block">Alterar</button>
-    <a class="btn btn-secondary btn-block" asp-action="Index" asp-controller="Home" role="button">Voltar</a>
-
-</form>
